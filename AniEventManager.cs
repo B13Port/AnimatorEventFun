@@ -7,6 +7,19 @@ using UnityEngine;
 
 public class AniEventManager : MonoBehaviour
 {
+
+    //添加动画事件
+    public void AddAnimationEvent(AnimationClip Clip, string functionName, string Parameter, float TimePre)
+    {
+        AnimationEvent OnExitColliderEvent = new AnimationEvent();
+        OnExitColliderEvent.functionName = functionName;
+        OnExitColliderEvent.stringParameter = Parameter;
+        OnExitColliderEvent.time = TimePre / 100f * Clip.length;
+        Clip.AddEvent(OnExitColliderEvent);
+    }
+    
+#if UNITY_EDITOR
+//添加动画事件
     private AnimatorEvent aniEvent;
     [Button]
     public void InitAniFun(Animator ani)
@@ -17,25 +30,12 @@ public class AniEventManager : MonoBehaviour
         }
         aniEvent.OnAnimKey += AniFun;
     }
-
-    private void AddAnimationEvent(AnimationClip Clip, string functionName, string Parameter, float TimePre)
-    {
-        AnimationEvent OnExitColliderEvent = new AnimationEvent();
-        OnExitColliderEvent.functionName = functionName;
-        OnExitColliderEvent.stringParameter = Parameter;
-        OnExitColliderEvent.time = TimePre / 100f * Clip.length;
-        Clip.AddEvent(OnExitColliderEvent);
-    }
-
-    private void Start()
-    {
-
-    }
-
+    //动画事件回调
     private void AniFun(string obj)
     {
         Debug.LogError(obj);
     }
+    //测试执行动画事件
     public Animator m_Animator;
     [Button]
     public void DoAction()
@@ -46,4 +46,5 @@ public class AniEventManager : MonoBehaviour
             AddAnimationEvent(item.Value, AnimatorEvent.KEY_ANIM_EVENT_FUNCTION, "isGo", 0.5f);
         }
     }
+    #endif
 }
